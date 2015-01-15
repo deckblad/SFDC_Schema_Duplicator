@@ -35,7 +35,7 @@ public class CmdLineArgs {
     private boolean createLocalSqlfiles=false;
     private boolean createLocalTables=true;
     private boolean dropIfTableExists=false;
-	private boolean populateDb=true;
+	private boolean populateDb=false;
     private String errorMessage=null;
 
 	/**

@@ -1,11 +1,13 @@
 package com.blogspot.arahuman.sf;
+//import org.apache.log4j.Logger;
+
 
 import com.blogspot.arahuman.data.DBHelper;
 import com.blogspot.arahuman.helper.Utilities;
 import com.sforce.soap.partner.Field;
 
-public class SfField extends Utilities {
-
+public class SfField extends Utilities implements Comparable<SfField> {
+	
 	private String Name_;
 	//private String Type_;
 	private boolean IsPrimary_ = false;
@@ -27,7 +29,6 @@ public class SfField extends Utilities {
 	public String getDBFieldName() {
 		if (Utilities.inArray(DBHelper.getKeywords(), this.Name_))
 			return "`" + this.Name_ + "`";
-		// return $name;
 		else
 			return this.Name_;
 	}
@@ -38,11 +39,13 @@ public class SfField extends Utilities {
 
 	private String getDBType() {
 		String dbType;
+
 		switch (this.Field_.getType())
 		{
 			case id:
 			case reference:
-				dbType = "VARCHAR("+this.Length_+")";
+				//dbType = "VARCHAR("+this.Length_+") DEFAULT ''";
+				dbType = "VARCHAR("+this.Length_+") CHARSET utf8 COLLATE utf8_bin DEFAULT ''";
 				break;
 			case percent:
 			case _double:
@@ -50,22 +53,26 @@ public class SfField extends Utilities {
 				dbType = "DOUBLE(" +this.Precision_+ "," + this.Field_.getScale() +")";
 				break;
 			case _boolean :
-				dbType = "VARCHAR(5)";
+				dbType = "VARCHAR(5) DEFAULT ''";
 				break;
 			case base64:
 				dbType = "LONGBLOB";
-				break;
-			case date:
-				dbType = "DATE";
-				break;
-			case datetime:
-				dbType = "DATETIME";
 				break;
 			case _int:
 				dbType = "INT";
 				break;
 			case time:
 				dbType = "TIME";
+				break;
+				/*			case date:
+				dbType = "DATE";
+				break;
+			case datetime:
+				dbType = "DATETIME NULL";
+				break;*/				
+			case date:
+			case datetime:	
+				dbType = "VARCHAR(32) DEFAULT ''";
 				break;
 			case phone:
 			case string:
@@ -76,7 +83,9 @@ public class SfField extends Utilities {
 			case multipicklist:
 			case combobox:
 			case encryptedstring:
-				if (this.Length_ < 256){
+
+				//de: use varchar for small fields so we don't have to worry about default value.
+/*				if (this.Length_ < 256){
 					dbType = "TINYTEXT";
 				}else if(this.Length_ >=256 && this.Length_ < 65535){
 					dbType = "TEXT";
@@ -84,9 +93,10 @@ public class SfField extends Utilities {
 					dbType = "LONGTEXT";
 				}
 				break;
+*/
 			default: //calculated,
 				if (this.Length_ < 256){
-					dbType = "VARCHAR(" + this.Length_ + ")";
+					dbType = "VARCHAR(" + this.Length_ + ") DEFAULT ''";
 				}else if(this.Length_ >=256 && this.Length_ < 65535){
 					dbType = "TEXT";
 				}else {
@@ -120,4 +130,8 @@ public class SfField extends Utilities {
 	public String getUpsertScript() {
 		return " " + this.getDBFieldName() + " = VALUES(" + this.getDBFieldName() + "),";
 	}
+	
+	public int compareTo(SfField other) {
+		return getName().toLowerCase().compareTo(other.getName().toLowerCase());
+	}	
 }

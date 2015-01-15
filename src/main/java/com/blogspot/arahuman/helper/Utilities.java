@@ -11,7 +11,7 @@ import java.text.StringCharacterIterator;
 
 import org.apache.log4j.Logger;
 
-import com.blogspot.arahuman.data.DBHelper;
+//import com.blogspot.arahuman.data.DBHelper;
 
 public class Utilities {
 

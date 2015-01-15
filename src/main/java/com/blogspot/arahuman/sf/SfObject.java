@@ -1,8 +1,8 @@
 package com.blogspot.arahuman.sf;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -55,6 +55,8 @@ public class SfObject extends Utilities {
 				}
 			}
 		}
+		// sort fields here?
+		Collections.sort(Fields_);
 	}
 	
 	/**

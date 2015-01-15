@@ -37,6 +37,8 @@ public class SFDataDuplicator {
 			commandLine = cmdLineGnuParser.parse(gnuOptions, commandLineArguments);
 			if (commandLine.hasOption("p"))
 				cmd.setEnableProxy(Boolean.parseBoolean(commandLine.getOptionValue("p")));
+			if (commandLine.hasOption("pdb"))
+				cmd.setPopulateDb(Boolean.parseBoolean(commandLine.getOptionValue("pdb")));
 			if (commandLine.hasOption("ph")) 
 				cmd.setProxyHost(commandLine.getOptionValue("ph"));
 			if (commandLine.hasOption("po")) 
@@ -219,7 +221,8 @@ public class SFDataDuplicator {
 	 * @param commandLineArguments
 	 *            Commmand-line arguments.
 	 */
-	public static void main(final String[] commandLineArguments) {
+	//public static void main(final String[] commandLineArguments) {
+	public static void main(String[] commandLineArguments) {
 		logger.info("Starting the applicaton to downloaded data from Salesforce.com" );
 		final String applicationName = "SFDataDuplicator";
 		displayBlankLines(1, System.out);
@@ -237,7 +240,7 @@ public class SFDataDuplicator {
 			// constructPosixOptions(), 80, "POSIX HELP", "End of POSIX Help",
 			// 3, 5, true, System.out);
 			displayBlankLines(1, System.out);
-			printHelp(constructGnuOptions(), 80, "GNU HELP", "End of GNU Help", 5, 3, true, System.out);
+			printHelp(constructGnuOptions(), 80, " GNU HELP", "End of GNU Help", 5, 3, true, System.out);
 		}
 		displayProvidedCommandLineArguments(commandLineArguments, System.out);
 		
